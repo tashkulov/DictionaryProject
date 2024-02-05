@@ -41,6 +41,25 @@ const Start = () => {
         setIsFlipped(!isFlipped);
     };
 
+    const handleSpeak = async () => {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(words[currentIndex].english);
+
+            if (words[currentIndex].language === 'ru') {
+                utterance.lang = 'ru-RU';
+            } else {
+                utterance.lang = 'en-US';
+            }
+
+            await new Promise((resolve) => {
+                utterance.onend = resolve;
+                speechSynthesis.speak(utterance);
+            });
+        } else {
+            alert('Web Speech API не поддерживается в этом браузере.');
+        }
+    };
+
     return (
         <div className="wrap">
             {words.length > 0 && currentIndex < words.length && (
@@ -54,11 +73,13 @@ const Start = () => {
                     <div className="button-container">
                         <button type="text" className="submit" onClick={handleNextWord}><strong>Next</strong></button>
                         <button type="text" className="submit" onClick={handleShowTranslation}><strong>Show</strong></button>
+
                         <button type="button" className="submit">
                             <Link to="/" style={{ textDecoration: "none", color: "wheat" }}>
                                 <strong>To home</strong>
                             </Link>
                         </button>
+                        <button type="button" className="submit"  onClick={handleSpeak}><strong>Speak</strong></button>
                     </div>
                 </>
             )}

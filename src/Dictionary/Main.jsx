@@ -41,7 +41,7 @@ const Main = () => {
     const handleClearAllWords = () => {
         setWords([]);
         localStorage.removeItem('words');
-        toast.info('Word added!', { autoClose: 2000 });
+        toast.info('All word cleaned!', { autoClose: 2000 });
     };
 
     return (
@@ -77,7 +77,7 @@ const Main = () => {
             <button type="text" className="submit" onClick={handleStartTest}>start</button>
             <button type="text" className="submit" onClick={handleClearAllWords}>Clear All Words</button>
 
-            <ToastContainer position="bottom-center" />
+            <ToastContainer position="bottom-center"/>
         </div>
     );
 };
