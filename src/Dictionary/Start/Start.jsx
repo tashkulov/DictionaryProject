@@ -1,26 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import {Link, useLocation} from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './Start.css';
+
+const shuffleArray = (array) => {
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+    return shuffledArray;
+};
 
 const Start = () => {
     const location = useLocation();
     const initialWords = location.state ? location.state.words : [];
     const [words, setWords] = useState(() => {
-        // При первой загрузке берем слова из локального хранилища, если они там есть
         const storedWords = localStorage.getItem('words');
-        return storedWords ? JSON.parse(storedWords) : initialWords;
+        const initialWordsArray = storedWords ? JSON.parse(storedWords) : initialWords;
+        return shuffleArray(initialWordsArray);
     });
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
 
     useEffect(() => {
-        // Сохраняем слова в локальное хранилище при каждом изменении
         localStorage.setItem('words', JSON.stringify(words));
     }, [words]);
 
     useEffect(() => {
-        // Обновляем слова, если они изменились извне (например, через локальное хранилище)
-        setWords(initialWords);
+        setWords(shuffleArray(initialWords));
         setCurrentIndex(0);
         setIsFlipped(false);
     }, [initialWords]);
@@ -36,7 +43,6 @@ const Start = () => {
 
     return (
         <div className="wrap">
-
             {words.length > 0 && currentIndex < words.length && (
                 <>
                     <div className={`card ${isFlipped ? 'flipped' : ''}`}>
@@ -49,11 +55,10 @@ const Start = () => {
                         <button type="text" className="submit" onClick={handleNextWord}><strong>Next</strong></button>
                         <button type="text" className="submit" onClick={handleShowTranslation}><strong>Show</strong></button>
                         <button type="button" className="submit">
-                            <Link to="/" style={{textDecoration: "none", color: "wheat"}}>
+                            <Link to="/" style={{ textDecoration: "none", color: "wheat" }}>
                                 <strong>To home</strong>
                             </Link>
                         </button>
-
                     </div>
                 </>
             )}

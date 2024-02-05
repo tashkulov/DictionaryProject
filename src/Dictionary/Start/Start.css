@@ -59,3 +59,14 @@ body {
 .card.flipped .back {
     transform: rotateY(360deg);
 }
+
+@media only screen and (max-width: 600px) {
+    .card {
+        width: 200px; /* Уменьшил ширину карты для мобильных устройств */
+        height: 200px; /* Уменьшил высоту карты для мобильных устройств */
+    }
+
+    .front, .back {
+        font-size: 1.5rem; /* Уменьшил размер шрифта для мобильных устройств */
+    }
+}
