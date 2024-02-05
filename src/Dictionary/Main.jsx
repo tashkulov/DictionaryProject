@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate} from 'react-router-dom';
 import "./Main.css"
 const Main = () => {
@@ -7,10 +7,22 @@ const Main = () => {
     const [words, setWords] = useState([]);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        // Загрузите слова из локального хранилища при монтировании компонента
+        const storedWords = localStorage.getItem('words');
+        if (storedWords) {
+            setWords(JSON.parse(storedWords));
+        }
+    }, []);
+
     const handleAddWord = () => {
         if (englishWord && russianWord) {
             const newWord = { english: englishWord, russian: russianWord };
             setWords((prevWords) => [...prevWords, newWord]);
+
+            // Сохраните слова в локальное хранилище
+            localStorage.setItem('words', JSON.stringify([...words, newWord]));
+
             setEnglishWord('');
             setRussianWord('');
         }
@@ -18,7 +30,7 @@ const Main = () => {
 
     const handleStartTest = () => {
         if (words.length > 0) {
-            navigate('/start',{state:{words}});
+            navigate('/start', { state: { words } });
         } else {
             alert('Добавьте слова перед началом теста.');
         }

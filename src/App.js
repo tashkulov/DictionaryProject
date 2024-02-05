@@ -12,6 +12,7 @@ function App() {
     return (
         <Router>
             <Routes>
+
                 <Route path="/" element={<Main />} />
                 <Route path="/start" element={<Start />} />
             </Routes>
@@ -20,4 +21,9 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
 
