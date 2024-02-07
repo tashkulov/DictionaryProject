@@ -29,7 +29,7 @@ body {
 }
 
 .front, .back {
-    color: #472FF7;
+    color: #272638;
     font-size: 2.5rem;
     position: absolute;
     width: 100%;
@@ -44,7 +44,7 @@ body {
 }
 
 .front {
-    background-color: #15172b;
+    border-radius: 50px;
 }
 
 .back {

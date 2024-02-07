@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Main.css';
+import './SelectStyles.css';
 
 const Main = () => {
     const [englishWord, setEnglishWord] = useState('');
     const [russianWord, setRussianWord] = useState('');
+    const [selectedType, setSelectedType] = useState(''); // Добавляем состояние для хранения выбранного типа слова
     const [words, setWords] = useState([]);
     const navigate = useNavigate();
 
@@ -18,15 +20,16 @@ const Main = () => {
     }, []);
 
     const handleAddWord = () => {
-        if (englishWord && russianWord) {
-            const newWord = { english: englishWord, russian: russianWord };
+        if (englishWord && russianWord && selectedType) {
+            const newWord = { english: englishWord, russian: russianWord, type: selectedType }; // Добавляем тип слова к новому слову
             setWords((prevWords) => [...prevWords, newWord]);
             localStorage.setItem('words', JSON.stringify([...words, newWord]));
             setEnglishWord('');
             setRussianWord('');
+            setSelectedType('');
             toast.success('Word added successfully!', { autoClose: 2000 });
         } else {
-            toast.error('Please enter both English and Russian words.');
+            toast.error('Please enter both English and Russian words and select a type.');
         }
     };
 
@@ -42,6 +45,10 @@ const Main = () => {
         setWords([]);
         localStorage.removeItem('words');
         toast.info('All word cleaned!', { autoClose: 2000 });
+    };
+
+    const handleTypeChange = (e) => {
+        setSelectedType(e.target.value);
     };
 
     return (
@@ -71,6 +78,13 @@ const Main = () => {
                 />
                 <div className="cut"></div>
                 <label htmlFor="lastname" className="placeholder">Russian word</label>
+
+                <select value={selectedType} onChange={handleTypeChange}>
+                    <option value="" disabled hidden>Select an option</option>
+                    <option value="Noun">Noun</option>
+                    <option value="Verb">Verb</option>
+                    <option value="Adjective">Adjective</option>
+                </select>
             </div>
 
             <button type="text" className="submit" onClick={handleAddWord}>add</button>
